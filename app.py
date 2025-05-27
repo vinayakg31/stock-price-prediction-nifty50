@@ -27,27 +27,27 @@ if page == "Overview":
 elif page == "Model Prediction":
     st.header("🧠 Predict Next Day Price")
 
-    # Input fields for all 12 features
-    open_ = st.number_input("Open Price", value=18000.0)
-    high = st.number_input("High Price", value=18100.0)
-    low = st.number_input("Low Price", value=17950.0)
+    # Clear and accurate input labels
     close = st.number_input("📈 Today's Close Price (Close)", value=18000.0)
     lag1 = st.number_input("📉 Yesterday's Close Price (Lag_1)", value=17950.0)
-    lag3 = st.number_input("Lag_3", value=17900.0)
-    lag7 = st.number_input("Lag_7", value=17800.0)
-    ma20 = st.number_input("MA_20", value=17980.0)
-    ma100 = st.number_input("MA_100", value=17500.0)
-    bb_high = st.number_input("BB_High", value=18200.0)
-    bb_low = st.number_input("BB_Low", value=17800.0)
-    bb_width = st.number_input("BB_Width", value=400.0)
+    open_ = st.number_input("Open Price", value=18010.0)
+    high = st.number_input("High Price", value=18100.0)
+    low = st.number_input("Low Price", value=17900.0)
+    lag3 = st.number_input("Lag_3 (Close 3 days ago)", value=17850.0)
+    lag7 = st.number_input("Lag_7 (Close 7 days ago)", value=17700.0)
+    ma20 = st.number_input("MA_20 (20-day moving average)", value=17980.0)
+    ma100 = st.number_input("MA_100 (100-day moving average)", value=17500.0)
+    bb_high = st.number_input("BB_High (Upper Bollinger Band)", value=18200.0)
+    bb_low = st.number_input("BB_Low (Lower Bollinger Band)", value=17800.0)
+    bb_width = st.number_input("BB_Width (Band Width)", value=400.0)
 
-    # Combine inputs
-      features = [[close, low, open_, high, lag1, lag3, lag7, ma100, bb_low, ma20, bb_high, bb_width]]
+    # Combine inputs in the correct order
+    features = [[close, low, open_, high, lag1, lag3, lag7, ma100, bb_low, ma20, bb_high, bb_width]]
 
     if st.button("Predict"):
-        # Scale input features
+        # Scale input features using trained StandardScaler
         scaled_features = scaler.transform(features)
-        # Predict
+        # Make prediction
         pred = model.predict(scaled_features)[0]
         st.success(f"📢 Predicted Next Day Closing Price: ₹{pred:.2f}")
 
