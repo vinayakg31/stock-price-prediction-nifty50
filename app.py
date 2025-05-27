@@ -28,11 +28,11 @@ elif page == "Model Prediction":
     st.header("🧠 Predict Next Day Price")
 
     # Clear and accurate input labels
-    close = st.number_input("📈 Today's Close Price (Close)", value=18000.0)
-    lag1 = st.number_input("📉 Yesterday's Close Price (Lag_1)", value=17950.0)
     open_ = st.number_input("Open Price", value=18010.0)
     high = st.number_input("High Price", value=18100.0)
     low = st.number_input("Low Price", value=17900.0)
+    close = st.number_input("Close", value=18000.0)
+    lag1 = st.number_input("Lag_1", value=17950.0)	
     lag3 = st.number_input("Lag_3 (Close 3 days ago)", value=17850.0)
     lag7 = st.number_input("Lag_7 (Close 7 days ago)", value=17700.0)
     ma20 = st.number_input("MA_20 (20-day moving average)", value=17980.0)
