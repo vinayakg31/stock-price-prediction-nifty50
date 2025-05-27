@@ -31,8 +31,8 @@ elif page == "Model Prediction":
     open_ = st.number_input("Open Price", value=18000.0)
     high = st.number_input("High Price", value=18100.0)
     low = st.number_input("Low Price", value=17950.0)
-    close = st.number_input("Previous Close", value=18000.0)
-    lag1 = st.number_input("Lag_1", value=18000.0)
+    close = st.number_input("📈 Today's Close Price (Close)", value=18000.0)
+    lag1 = st.number_input("📉 Yesterday's Close Price (Lag_1)", value=17950.0)
     lag3 = st.number_input("Lag_3", value=17900.0)
     lag7 = st.number_input("Lag_7", value=17800.0)
     ma20 = st.number_input("MA_20", value=17980.0)
@@ -42,7 +42,7 @@ elif page == "Model Prediction":
     bb_width = st.number_input("BB_Width", value=400.0)
 
     # Combine inputs
-    features = [[close, low, open_, high, lag1, lag3, lag7, ma100, bb_low, ma20, bb_high, bb_width]]
+      features = [[close, low, open_, high, lag1, lag3, lag7, ma100, bb_low, ma20, bb_high, bb_width]]
 
     if st.button("Predict"):
         # Scale input features
