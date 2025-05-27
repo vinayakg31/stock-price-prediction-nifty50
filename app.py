@@ -5,18 +5,14 @@ import matplotlib.pyplot as plt
 
 # Load model and scaler
 model = joblib.load("models/linear_model.pkl")
-scaler = joblib.load("models/scaler.pkl")  # Load the saved StandardScaler
+scaler = joblib.load("models/scaler.pkl")
 
-# Custom logo + title layout using HTML/CSS
-st.markdown(
-    """
-    <div style="display: flex; align-items: center;">
-        <img src='gncipl_logo.jpg' style='width: 60px; margin-right: 20px;'>
-        <h1 style="margin: 0;">📈 NIFTY 50 Stock Price Prediction Dashboard</h1>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# Create logo + title using st.columns for Streamlit compatibility
+logo_col, title_col = st.columns([1, 8])
+with logo_col:
+    st.image("gncipl_logo.jpg", width=60)
+with title_col:
+    st.markdown("## 📈 NIFTY 50 Stock Price Prediction Dashboard")
 
 # Sidebar navigation
 page = st.sidebar.selectbox("Choose a view", ["Overview", "Model Prediction", "Backtesting"])
@@ -35,12 +31,11 @@ if page == "Overview":
 elif page == "Model Prediction":
     st.header("🧠 Predict Next Day Price")
 
-    # Clear and accurate input labels
     open_ = st.number_input("Open Price", value=18010.0)
     high = st.number_input("High Price", value=18100.0)
     low = st.number_input("Low Price", value=17900.0)
     close = st.number_input("Close", value=18000.0)
-    lag1 = st.number_input("Lag_1", value=17950.0)	
+    lag1 = st.number_input("Lag_1", value=17950.0)
     lag3 = st.number_input("Lag_3 (Close 3 days ago)", value=17850.0)
     lag7 = st.number_input("Lag_7 (Close 7 days ago)", value=17700.0)
     ma20 = st.number_input("MA_20 (20-day moving average)", value=17980.0)
@@ -49,13 +44,10 @@ elif page == "Model Prediction":
     bb_low = st.number_input("BB_Low (Lower Bollinger Band)", value=17800.0)
     bb_width = st.number_input("BB_Width (Band Width)", value=400.0)
 
-    # Combine inputs in the correct order
     features = [[close, low, open_, high, lag1, lag3, lag7, ma100, bb_low, ma20, bb_high, bb_width]]
 
     if st.button("Predict"):
-        # Scale input features using trained StandardScaler
         scaled_features = scaler.transform(features)
-        # Make prediction
         pred = model.predict(scaled_features)[0]
         st.success(f"📢 Predicted Next Day Closing Price: ₹{pred:.2f}")
 
