@@ -7,8 +7,12 @@ import matplotlib.pyplot as plt
 model = joblib.load("models/linear_model.pkl")
 scaler = joblib.load("models/scaler.pkl")  # Load the saved StandardScaler
 
-# Page title
-st.title("📈 NIFTY 50 Stock Price Prediction Dashboard")
+# Show GN-CIPL logo in top-left corner
+logo_col, title_col = st.columns([1, 8])
+with logo_col:
+    st.image("./gncipl_logo.jpg", width=80)
+with title_col:
+    st.markdown("### 📈 NIFTY 50 Stock Price Prediction Dashboard")
 
 # Sidebar navigation
 page = st.sidebar.selectbox("Choose a view", ["Overview", "Model Prediction", "Backtesting"])
