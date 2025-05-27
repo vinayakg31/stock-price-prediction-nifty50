@@ -3,17 +3,15 @@ import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 
-# Load model
+# Load model and scaler
 model = joblib.load("models/linear_model.pkl")
+scaler = joblib.load("models/scaler.pkl")  # Load the saved StandardScaler
 
 # Page title
 st.title("📈 NIFTY 50 Stock Price Prediction Dashboard")
 
 # Sidebar navigation
 page = st.sidebar.selectbox("Choose a view", ["Overview", "Model Prediction", "Backtesting"])
-
-# Load your test data or prediction dataset if needed
-# You can also load a CSV or just display charts from Jupyter
 
 if page == "Overview":
     st.header("📊 Project Summary")
@@ -29,7 +27,7 @@ if page == "Overview":
 elif page == "Model Prediction":
     st.header("🧠 Predict Next Day Price")
 
-    # Example static input or collect from user
+    # Input fields for all 12 features
     open_ = st.number_input("Open Price", value=18000.0)
     high = st.number_input("High Price", value=18100.0)
     low = st.number_input("Low Price", value=17950.0)
@@ -43,21 +41,23 @@ elif page == "Model Prediction":
     bb_low = st.number_input("BB_Low", value=17800.0)
     bb_width = st.number_input("BB_Width", value=400.0)
 
+    # Combine inputs
     features = [[close, low, open_, high, lag1, lag3, lag7, ma100, bb_low, ma20, bb_high, bb_width]]
-    
+
     if st.button("Predict"):
-        pred = model.predict(features)[0]
+        # Scale input features
+        scaled_features = scaler.transform(features)
+        # Predict
+        pred = model.predict(scaled_features)[0]
         st.success(f"📢 Predicted Next Day Closing Price: ₹{pred:.2f}")
 
 elif page == "Backtesting":
     st.header("📈 Backtest Summary")
 
-    # Sample chart from Jupyter output (or load CSV of returns)
     st.markdown("### Cumulative Return (Simulated Trades)")
 
-    # You can use st.line_chart() or st.pyplot() for full control
     fig, ax = plt.subplots()
-    cum_returns = pd.read_csv("data/backtest_cum_return.csv")  # Create this file from your Jupyter
+    cum_returns = pd.read_csv("data/backtest_cum_return.csv")
     ax.plot(cum_returns['Cumulative_Return'], label="Cumulative Return")
     ax.set_title("Backtesting Cumulative Profit")
     ax.set_ylabel("₹ Profit")
